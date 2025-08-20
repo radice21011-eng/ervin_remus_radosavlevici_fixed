@@ -1,0 +1,32 @@
+/*
+ * © 2025 Ervin Remus Radosavlevici. All rights reserved.
+ * Watermarked & timestamped: 2025-08-19 Europe/London
+ * This file is part of the secured project under authorship of Ervin Remus Radosavlevici.
+ */
+
+{
+  "name": "ervin-remus-radosavlevici",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@google/genai": "0.15.0",
+    "jspdf": "latest",
+    "jspdf-autotable": "latest",
+    "uuid": "latest",
+    "@google": "latest",
+    "path": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "~5.8.2",
+    "vite": "latest"
+  }
+}

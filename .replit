@@ -1,0 +1,13 @@
+language = "nodejs"
+entrypoint = "index.js"
+run = "npm start"
+
+[packager]
+language = "nodejs"
+
+[packager.features]
+packageCache = true
+guessedImports = true
+
+[languages.nodejs]
+version = "20"

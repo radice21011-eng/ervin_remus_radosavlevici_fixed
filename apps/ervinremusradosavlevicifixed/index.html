@@ -1,0 +1,622 @@
+/*
+ * © 2025 Ervin Remus Radosavlevici. All rights reserved.
+ * Watermarked & timestamped: 2025-08-19 Europe/London
+ * This file is part of the secured project under authorship of Ervin Remus Radosavlevici.
+ */
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RADOS v4.0 - Strategic Analysis</title>
+    <meta name="description" content="RADOS v4.0: A production-ready, interactive web application for celestial cartography and strategic analysis.">
+    <meta name="author" content="Ervin Remus Radosavlevici">
+    <meta property="og:title" content="RADOS v4.0 - Strategic Analysis">
+    <meta property="og:description" content="Interactive celestial cartography and strategic analysis platform.">
+    <meta property="og:type" content="website">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fira+Code&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "@google/genai": "https://esm.sh/@google/genai@0.15.0",
+    "jspdf": "https://esm.sh/jspdf@2.5.1",
+    "jspdf-autotable": "https://esm.sh/jspdf-autotable@3.8.2",
+    "uuid": "https://esm.sh/uuid@9.0.1"
+  }
+}
+</script>
+<style>
+      /* --- Base Styles & Fonts --- */
+      html {
+        font-family: 'Inter', sans-serif;
+      }
+      .font-sans {
+        font-family: 'Inter', sans-serif;
+      }
+      .font-mono {
+        font-family: 'Fira Code', monospace;
+      }
+
+      /* --- Custom Scrollbar --- */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      .dark ::-webkit-scrollbar-track {
+        background: #111827; /* gray-900 */
+      }
+      .light ::-webkit-scrollbar-track {
+        background: #f3f4f6; /* gray-100 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #4f46e5; /* indigo-600 */
+        border-radius: 20px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+         border: 3px solid #111827; /* gray-900 */
+      }
+       .light ::-webkit-scrollbar-thumb {
+         border: 3px solid #f3f4f6; /* gray-100 */
+      }
+
+      /* --- Animations & Effects --- */
+      @keyframes fadeIn {
+        from { 
+          opacity: 0; 
+          transform: translateY(10px); 
+        }
+        to { 
+          opacity: 1; 
+          transform: translateY(0); 
+        }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      @keyframes flash-green {
+        0%, 100% { box-shadow: 0 0 0px rgba(74, 222, 128, 0); }
+        50% { box-shadow: inset 0 0 0 2px rgba(74, 222, 128, 0.7); }
+      }
+      @keyframes flash-red {
+        0%, 100% { box-shadow: 0 0 0px rgba(248, 113, 113, 0); }
+        50% { box-shadow: inset 0 0 0 2px rgba(248, 113, 113, 0.7); }
+      }
+      .animate-flash-green {
+        animation: flash-green 1.5s ease-out;
+      }
+      .animate-flash-red {
+        animation: flash-red 1.5s ease-out;
+      }
+       @keyframes value-flash-positive {
+        0%, 100% { color: inherit; }
+        50% { color: #22c55e; /* green-500 */ }
+      }
+      @keyframes value-flash-negative {
+         0%, 100% { color: inherit; }
+        50% { color: #ef4444; /* red-500 */ }
+      }
+      .animate-value-flash-positive {
+        animation: value-flash-positive 1s ease-out;
+      }
+      .animate-value-flash-negative {
+        animation: value-flash-negative 1s ease-out;
+      }
+      @keyframes pulse-status {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.5); opacity: 0.7; }
+      }
+      .animate-pulse-status {
+        animation: pulse-status 2s infinite ease-in-out;
+      }
+      @keyframes title-glow {
+        0%, 100% { text-shadow: 0 0 5px rgba(139, 92, 246, 0.3), 0 0 10px rgba(139, 92, 246, 0.2); }
+        50% { text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3); }
+      }
+      .title-glow {
+        animation: title-glow 4s ease-in-out infinite;
+      }
+      @keyframes pulse-border-red {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+        50% { box-shadow: 0 0 0 4px rgba(248, 113, 113, 0); }
+      }
+      .animate-pulse-border-red {
+        animation: pulse-border-red 2s infinite;
+      }
+      @keyframes glitch-scan {
+        0%, 10%, 100% { height: 0; top: 0; }
+        5% { height: 100%; top: 0; }
+        9.9% { height: 100%; top: 0; }
+      }
+      @keyframes glitch-anim1 {
+        0% { clip-path: inset(45% 0 45% 0); }
+        25% { clip-path: inset(15% 0 75% 0); }
+        50% { clip-path: inset(80% 0 5% 0); }
+        75% { clip-path: inset(40% 0 40% 0); }
+        100% { clip-path: inset(65% 0 25% 0); }
+      }
+      @keyframes glitch-anim2 {
+        0% { clip-path: inset(85% 0 5% 0); }
+        25% { clip-path: inset(20% 0 70% 0); }
+        50% { clip-path: inset(70% 0 10% 0); }
+        75% { clip-path: inset(35% 0 55% 0); }
+        100% { clip-path: inset(90% 0 2% 0); }
+      }
+      .glitch-container {
+        position: relative;
+        overflow: hidden;
+      }
+      .glitch-text {
+        position: relative;
+      }
+      .glitch-text::before,
+      .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+      }
+      .glitch-text::before {
+        left: 2px;
+        text-shadow: -1px 0 #ef4444;
+        animation: glitch-anim1 2s infinite linear alternate-reverse;
+      }
+      .glitch-text::after {
+        left: -2px;
+        text-shadow: -1px 0 #3b82f6, 2px 2px #ef4444;
+        animation: glitch-anim2 2s infinite linear alternate-reverse;
+      }
+      .glitch-scan-line::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(239, 68, 68, 0.1);
+        box-shadow: 0 0 5px rgba(239, 68, 68, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.7);
+        animation: glitch-scan 4s infinite linear;
+      }
+      
+      /* --- Styles for CelestialViewer3D --- */
+      .grid-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.5;
+      }
+      @keyframes scan-vertical {
+        0% { transform: translateY(-100%); opacity: 0; }
+        50% { opacity: 0.3; }
+        100% { transform: translateY(100%); opacity: 0; }
+      }
+      .scan-line-vertical {
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 100%;
+        background: linear-gradient(to bottom, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0));
+        animation: scan-vertical 5s ease-in-out infinite;
+      }
+      .status-overlay {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        font-size: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 2px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.1em;
+        z-index: 10;
+      }
+
+      /* Background Image & Ken Burns Effect */
+      @keyframes ken-burns {
+        0% {
+          transform: scale(1.05) translate(2%, -1%);
+        }
+        100% {
+          transform: scale(1.2) translate(-2%, 1%);
+        }
+      }
+      .celestial-background {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-size: cover;
+        background-position: center;
+        animation: ken-burns 45s ease-in-out infinite alternate;
+      }
+
+      /* --- Styles for Procedural Generation --- */
+      @keyframes swirl {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulse-core {
+        0%, 100% { transform: scale(0.95); box-shadow: 0 0 25px 10px rgba(255, 255, 224, 0.4); }
+        50% { transform: scale(1.05); box-shadow: 0 0 40px 15px rgba(255, 255, 224, 0.6); }
+      }
+      .procedural-galaxy {
+        animation: swirl 120s linear infinite;
+      }
+      .galaxy-core {
+        position: absolute;
+        width: 30%; height: 30%;
+        background: radial-gradient(circle, rgba(255,255,224,1) 0%, rgba(251,211,141,0.5) 50%, rgba(224,159,89,0) 100%);
+        border-radius: 50%;
+        animation: pulse-core 8s ease-in-out infinite;
+      }
+      .spiral-arm {
+        position: absolute;
+        width: 150%; height: 150%;
+        border-top: 2px solid rgba(199, 210, 254, 0.5);
+        border-radius: 50%;
+        transform-origin: 50% 50%;
+      }
+      @keyframes particle-fade {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 0.8; }
+      }
+      .star-particle {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        animation: particle-fade 3s ease-in-out infinite;
+      }
+      
+      @keyframes pulse-star {
+         0%, 100% { transform: scale(1); box-shadow: 0 0 30px 5px rgba(252, 211, 77, 0.5); }
+         50% { transform: scale(1.05); box-shadow: 0 0 50px 10px rgba(252, 211, 77, 0.8); }
+      }
+      .procedural-star {
+         width: 40%; height: 40%;
+         border-radius: 50%;
+         animation: pulse-star 6s ease-in-out infinite;
+         position: absolute;
+      }
+      .star-core {
+        width: 100%; height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(253,230,138,1) 40%, rgba(249,115,22,1) 100%);
+      }
+       .star-surface {
+        position: absolute; top:0; left:0; right:0; bottom:0;
+        background-image: url('https://www.transparenttextures.com/patterns/noisy.png');
+        opacity: 0.1;
+        border-radius: 50%;
+        animation: swirl 30s linear infinite reverse;
+      }
+
+      /* --- Styles for Location Markers --- */
+      @keyframes pulse-marker-strong {
+        0%, 100% { transform: scale(0.9); opacity: 0.8; }
+        50% { transform: scale(1.1); opacity: 1; }
+      }
+      .location-marker {
+        position: absolute;
+        width: 80px; height: 80px;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+        pointer-events: none;
+      }
+      .marker-reticle {
+        width: 100%; height: 100%;
+        border: 2px solid #ef4444;
+        border-radius: 50%;
+        animation: pulse-marker-strong 2s infinite ease-in-out;
+        position: relative;
+      }
+      .marker-reticle::before, .marker-reticle::after {
+        content: '';
+        position: absolute;
+        background-color: #ef4444;
+      }
+      .marker-reticle::before { /* horizontal */
+        top: 50%; left: 10%; width: 80%; height: 2px; transform: translateY(-50%);
+      }
+       .marker-reticle::after { /* vertical */
+        left: 50%; top: 10%; height: 80%; width: 2px; transform: translateX(-50%);
+      }
+      .marker-data {
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 12px;
+        background-color: rgba(239, 68, 68, 0.8);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.5);
+        border-radius: 6px;
+        white-space: nowrap;
+        text-align: center;
+      }
+       .marker-data .label { font-weight: bold; font-size: 14px; }
+       .marker-data .details { font-size: 12px; opacity: 0.9; }
+
+      /* --- Styles for Chimera Protocol --- */
+      .containment-marker {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 120px; height: 120px;
+        transform: translate(-50%, -50%);
+        z-index: 25;
+        pointer-events: none;
+      }
+      @keyframes rotate-reticle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      .containment-reticle {
+        width: 100%; height: 100%;
+        border: 3px solid #ef4444;
+        border-radius: 50%;
+        animation: rotate-reticle 10s linear infinite, pulse-marker-strong 1.5s infinite ease-in-out;
+        position: relative;
+        filter: drop-shadow(0 0 5px #ef4444);
+      }
+      .containment-reticle::before, .containment-reticle::after {
+        content: ''; position: absolute; background-color: #ef4444;
+      }
+      .containment-reticle::before { top: 50%; left: 5%; width: 90%; height: 3px; transform: translateY(-50%); }
+      .containment-reticle::after { left: 50%; top: 5%; height: 90%; width: 3px; transform: translateX(-50%); }
+
+      /* --- Styles for Modal Tabs --- */
+      .tab-button {
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        color: #9ca3af; /* gray-400 */
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+      }
+      .tab-button::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; /* Align with parent border */
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+      .tab-button.active::after, .tab-button.quarantine-tab.active::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+      .dark .tab-button.active, .dark .tab-button:hover { color: #eef2ff; } /* indigo-50 */
+      .light .tab-button.active, .light .tab-button:hover { color: #1e1b4b; } /* indigo-950 */
+      
+      .tab-button.quarantine-tab { color: #fca5a5; /* red-300 */ }
+      .tab-button.quarantine-tab.active, .tab-button.quarantine-tab:hover { color: #f87171; } /* red-400 */
+      .tab-button.quarantine-tab::after { background-color: #f87171; }
+
+      @keyframes content-fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .tab-content {
+        animation: content-fade-in 0.5s ease-out forwards;
+      }
+
+      /* --- Styles for Chat --- */
+       @keyframes blink {
+        50% { opacity: 0; }
+      }
+      .blinking-cursor {
+        animation: blink 1s step-end infinite;
+        font-weight: bold;
+        margin-left: 2px;
+        color: #818cf8; /* indigo-400 */
+      }
+      
+      /* --- Styles for NDA Watermark --- */
+      @keyframes pulse-watermark {
+        0%, 100% { opacity: 0.05; }
+        50% { opacity: 0.08; }
+      }
+      .dark .animate-pulse-watermark {
+         animation-name: pulse-watermark-dark;
+      }
+      @keyframes pulse-watermark-dark {
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.13; }
+      }
+      .watermark-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1000;
+      }
+      .watermark-tile {
+        position: absolute;
+        white-space: pre;
+        transform: rotate(-30deg);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #6b7280; /* gray-500 */
+        animation: pulse-watermark 8s ease-in-out infinite;
+      }
+      .dark .watermark-tile {
+        color: #9ca3af; /* gray-400 */
+        animation-name: pulse-watermark-dark;
+      }
+      
+      /* --- Styles for Toasts --- */
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes toast-out {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+      .toast {
+        animation: toast-in 0.5s ease forwards;
+      }
+      .toast.exiting {
+        animation: toast-out 0.5s ease forwards;
+      }
+
+      /* --- Styles for Command Palette --- */
+       .command-palette-kbd {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8em;
+        padding: 0.1em 0.4em;
+        border-radius: 4px;
+        border: 1px solid;
+        margin-left: 0.5em;
+      }
+      .dark .command-palette-kbd {
+         background-color: #374151; /* gray-700 */
+         border-color: #4b5563; /* gray-600 */
+         color: #d1d5db; /* gray-300 */
+      }
+       .light .command-palette-kbd {
+         background-color: #e5e7eb; /* gray-200 */
+         border-color: #d1d5db; /* gray-300 */
+         color: #374151; /* gray-700 */
+       }
+
+      /* --- Styles for Orbital View --- */
+      @keyframes orbit-rotation {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .orbital-view-orbit {
+        position: absolute;
+        top: 50%; left: 50%;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .orbital-view-planet-container {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        animation-name: orbit-rotation;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+      .orbital-view-planet {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: #9ca3af;
+      }
+      
+      /* --- Styles for Starmap --- */
+       @keyframes pulse-halo {
+        0%, 100% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+      }
+      .threat-halo {
+        animation: pulse-halo 3s infinite ease-out;
+        transform-origin: center;
+        will-change: transform, opacity;
+      }
+      .map-point {
+        transition: all 0.2s ease-in-out;
+      }
+      .map-point:hover {
+        stroke-width: 2;
+        filter: drop-shadow(0 0 5px currentColor);
+      }
+
+      /* --- Styles for Action Buttons --- */
+      .action-button {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          width: 100%;
+          text-align: left;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          background-color: rgba(79, 70, 229, 0.1);
+          border: 1px solid rgba(99, 102, 241, 0.4);
+          transition: all 0.2s ease-in-out;
+      }
+      .action-button:hover:not(:disabled) {
+          background-color: rgba(79, 70, 229, 0.2);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+      }
+      .action-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          background-color: rgba(107, 114, 128, 0.1);
+          border-color: rgba(107, 114, 128, 0.3);
+      }
+      .action-button-title {
+          font-weight: 600;
+          font-size: 1rem;
+      }
+      .action-button-cost {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.875rem;
+          color: #f59e0b; /* amber-500 */
+      }
+      .dark .action-button-cost {
+          color: #fcd34d; /* amber-300 */
+      }
+
+      /* --- Styles for AI Overview Modal --- */
+      .ai-overview-section {
+        border-left: 3px solid #6366f1; /* indigo-500 */
+        padding-left: 1rem;
+        margin-top: 1.5rem;
+      }
+      .dark .ai-overview-section {
+        border-left-color: #818cf8; /* indigo-400 */
+      }
+</style>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 overflow-hidden h-screen">
+    <div id="root" class="h-full"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

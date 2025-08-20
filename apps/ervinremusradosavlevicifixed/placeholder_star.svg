@@ -1,0 +1,6 @@
+/*
+ * © 2025 Ervin Remus Radosavlevici. All rights reserved.
+ * Watermarked & timestamped: 2025-08-19 Europe/London
+ * This file is part of the secured project under authorship of Ervin Remus Radosavlevici.
+ */
+
