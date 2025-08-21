@@ -17,7 +17,7 @@
   "dependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@google/genai": "0.15.0",
+    "@google/genai": "1.15.0",
     "jspdf": "latest",
     "jspdf-autotable": "latest",
     "uuid": "latest",
